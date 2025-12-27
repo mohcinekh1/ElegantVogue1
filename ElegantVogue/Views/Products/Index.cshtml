@@ -1,0 +1,167 @@
+﻿@model ProductListViewModel
+@{
+    ViewData["Title"] = "Collections";
+}
+
+<div class="products-page">
+    <!-- Sidebar Filters -->
+    <aside class="filters-sidebar">
+        <h2 class="filters-title">Filters</h2>
+
+        <form asp-action="Index" method="get" id="filterForm">
+            <!-- Size -->
+            <div class="filter-group">
+                <h3 class="filter-label">Size</h3>
+                <div class="size-buttons">
+                    @foreach (var size in Model.Sizes)
+                    {
+                        <label class="size-btn @(Model.SelectedSizeIds.Contains(size.Id) ? "active" : "")">
+                            <input type="checkbox" name="sizeIds" value="@size.Id"
+                                   @(Model.SelectedSizeIds.Contains(size.Id) ? "checked" : "")
+                                   onchange="this.form.submit()" hidden />
+                            @size.Name
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <!-- Availability -->
+            <div class="filter-group">
+                <h3 class="filter-label">Availability</h3>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="inStockOnly" value="true"
+                           @(Model.InStockOnly == true ? "checked" : "")
+                           onchange="this.form.submit()" />
+                    <span class="checkmark"></span>
+                    Availability <span class="count">(@Model.AvailableCount)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" disabled />
+                    <span class="checkmark"></span>
+                    Out Of Stock <span class="count">(@Model.OutOfStockCount)</span>
+                </label>
+            </div>
+
+            <!-- Category -->
+            <div class="filter-group collapsible">
+                <h3 class="filter-label">Category <span class="arrow">›</span></h3>
+                <div class="filter-content">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <label class="checkbox-label">
+                            <input type="radio" name="categoryId" value="@category.Id"
+                                   @(Model.SelectedCategoryId == category.Id ? "checked" : "")
+                                   onchange="this.form.submit()" />
+                            <span class="checkmark"></span>
+                            @category.Name
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <!-- Colors -->
+            <div class="filter-group collapsible">
+                <h3 class="filter-label">Colors <span class="arrow">›</span></h3>
+                <div class="filter-content">
+                    @foreach (var color in Model.Colors)
+                    {
+                        <label class="color-label @(Model.SelectedColorIds.Contains(color.Id) ? "active" : "")">
+                            <input type="checkbox" name="colorIds" value="@color.Id"
+                                   @(Model.SelectedColorIds.Contains(color.Id) ? "checked" : "")
+                                   onchange="this.form.submit()" hidden />
+                            <span class="color-swatch" style="background-color: @color.HexCode"></span>
+                            @color.Name
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <!-- Price Range -->
+            <div class="filter-group collapsible">
+                <h3 class="filter-label">Price Range <span class="arrow">›</span></h3>
+                <div class="filter-content">
+                    <div class="price-inputs">
+                        <input type="number" name="minPrice" placeholder="Min" value="@Model.MinPrice" />
+                        <span>-</span>
+                        <input type="number" name="maxPrice" placeholder="Max" value="@Model.MaxPrice" />
+                        <button type="submit" class="btn-go">Go</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collections -->
+            <div class="filter-group collapsible">
+                <h3 class="filter-label">Collections <span class="arrow">›</span></h3>
+                <div class="filter-content">
+                    @foreach (var collection in Model.Collections)
+                    {
+                        <label class="checkbox-label">
+                            <input type="radio" name="collectionId" value="@collection.Id"
+                                   @(Model.SelectedCollectionId == collection.Id ? "checked" : "")
+                                   onchange="this.form.submit()" />
+                            <span class="checkmark"></span>
+                            @collection.Name
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="filter-group collapsible">
+                <h3 class="filter-label">Tags <span class="arrow">›</span></h3>
+            </div>
+
+            <!-- Ratings -->
+            <div class="filter-group collapsible">
+                <h3 class="filter-label">Ratings <span class="arrow">›</span></h3>
+            </div>
+        </form>
+    </aside>
+
+    <!-- Products Main -->
+    <div class="products-main">
+        <!-- Search -->
+        <div class="products-search">
+            <form asp-action="Index" method="get" class="search-form-large">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+                <input type="text" name="search" value="@Model.SearchQuery" placeholder="" class="search-input-large" />
+                <button type="submit" class="search-btn-large">Search</button>
+            </form>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid-3">
+            @foreach (var product in Model.Products)
+            {
+                <a href="@Url.Action("Details", "Products", new { id = product.Id })" class="product-card">
+                    <div class="product-image">
+                        <img src="@product.ImageUrl" alt="@product.Name" />
+                    </div>
+                    <div class="product-info">
+                        <div class="product-meta">
+                            <span class="product-type">@product.ProductType</span>
+                            @if (product.ProductColors.Any())
+                            {
+                                <div class="product-colors">
+                                    @foreach (var pc in product.ProductColors.Take(2))
+                                    {
+                                        <span class="color-dot" style="background-color: @pc.Color?.HexCode"></span>
+                                    }
+                                    @if (product.ProductColors.Count > 2)
+                                    {
+                                        <span class="color-more">+@(product.ProductColors.Count - 2)</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <h3 class="product-name">@product.Name</h3>
+                        <span class="product-price">$ @product.Price.ToString("0")</span>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</div>

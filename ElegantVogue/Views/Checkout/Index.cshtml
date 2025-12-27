@@ -1,0 +1,138 @@
+﻿@model CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="checkout-page">
+    <a href="@Url.Action("Index", "Cart")" class="back-link">←</a>
+
+    <h1 class="checkout-title">CHECKOUT</h1>
+
+    <div class="checkout-steps">
+        <span class="step active">INFORMATION</span>
+        <span class="step">SHIPPING</span>
+        <span class="step">PAYMENT</span>
+    </div>
+
+    <div class="checkout-container">
+        <!-- Form -->
+        <div class="checkout-form">
+            <form asp-action="PlaceOrder" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="form-section">
+                    <h2 class="form-section-title">CONTACT INFO</h2>
+
+                    <div class="form-group">
+                        <input asp-for="Email" class="form-input" placeholder="Email" />
+                        <span asp-validation-for="Email" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input asp-for="Phone" class="form-input" placeholder="Phone" />
+                        <span asp-validation-for="Phone" class="error"></span>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-section-title">SHIPPING ADDRESS</h2>
+
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <input asp-for="FirstName" class="form-input" placeholder="First Name" />
+                            <span asp-validation-for="FirstName" class="error"></span>
+                        </div>
+                        <div class="form-group half">
+                            <input asp-for="LastName" class="form-input" placeholder="Last Name" />
+                            <span asp-validation-for="LastName" class="error"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <select asp-for="Country" class="form-input">
+                            <option value="">Country</option>
+                            <option value="US">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="FR">France</option>
+                            <option value="DE">Germany</option>
+                            <option value="MA">Morocco</option>
+                        </select>
+                        <span asp-validation-for="Country" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input asp-for="StateRegion" class="form-input" placeholder="State / Region" />
+                    </div>
+
+                    <div class="form-group">
+                        <input asp-for="Address" class="form-input" placeholder="Address" />
+                        <span asp-validation-for="Address" class="error"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <input asp-for="City" class="form-input" placeholder="City" />
+                            <span asp-validation-for="City" class="error"></span>
+                        </div>
+                        <div class="form-group half">
+                            <input asp-for="PostalCode" class="form-input" placeholder="Postal Code" />
+                            <span asp-validation-for="PostalCode" class="error"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-shipping">
+                    Shipping
+                    <span class="arrow">→</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="checkout-summary">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h2>YOUR ORDER</h2>
+                    <span>(@Model.Cart.ItemCount)</span>
+                </div>
+
+                <div class="summary-items">
+                    @foreach (var item in Model.Cart.Items)
+                    {
+                        <div class="summary-item">
+                            <img src="@item.ImageUrl" alt="@item.ProductName" />
+                            <div class="summary-item-info">
+                                <h4>@item.ProductName</h4>
+                                <p>@item.ColorName/@item.SizeName</p>
+                                <span>(@item.Quantity)</span>
+                            </div>
+                            <div class="summary-item-price">
+                                <a href="@Url.Action("Index", "Cart")">Change</a>
+                                <span>$ @item.Price.ToString("0")</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>$@Model.Cart.Subtotal.ToString("0.00")</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span class="note">Calculated at next step</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>$@Model.Cart.Total.ToString("0.00")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

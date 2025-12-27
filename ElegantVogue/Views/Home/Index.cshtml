@@ -1,0 +1,150 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Search Section -->
+<section class="search-section">
+    <form asp-controller="Products" asp-action="Index" method="get" class="search-form">
+        <input type="text" name="search" placeholder="Search..." class="search-input" />
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+</section>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">
+                <span class="hero-title-new">NEW</span>
+                <span class="hero-title-collection">COLLECTION</span>
+            </h1>
+            <p class="hero-subtitle">Summer</p>
+            <p class="hero-year">2024</p>
+            <div class="hero-nav">
+                <span class="hero-arrow">→</span>
+                <span class="hero-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </span>
+            </div>
+            <a href="@Url.Action("Index", "Products")" class="btn-shop">Go To Shop</a>
+        </div>
+        <div class="hero-images">
+            @if (Model.FeaturedProducts.Count >= 2)
+            {
+                <div class="hero-image-card">
+                    <img src="@Model.FeaturedProducts[0].ImageUrl" alt="@Model.FeaturedProducts[0].Name" />
+                </div>
+                <div class="hero-image-card">
+                    <img src="@Model.FeaturedProducts[1].ImageUrl" alt="@Model.FeaturedProducts[1].Name" />
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- New This Week Section -->
+<section class="section-new-week">
+    <div class="section-header">
+        <h2 class="section-title">
+            <span class="title-new">NEW</span>
+            <span class="title-week">THIS WEEK</span>
+            <span class="title-count">(50)</span>
+        </h2>
+        <a href="@Url.Action("Index", "Products")" class="link-see-all">See All</a>
+    </div>
+    <div class="products-grid-4">
+        @foreach (var product in Model.NewThisWeek)
+        {
+            <a href="@Url.Action("Details", "Products", new { id = product.Id })" class="product-card">
+                <div class="product-image">
+                    <img src="@product.ImageUrl" alt="@product.Name" />
+                    <button class="btn-add-quick">+</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-meta">
+                        <span class="product-type">@product.ProductType</span>
+                        @if (product.ProductColors.Any())
+                        {
+                            <div class="product-colors">
+                                @foreach (var pc in product.ProductColors.Take(3))
+                                {
+                                    <span class="color-dot" style="background-color: @pc.Color?.HexCode"></span>
+                                }
+                                @if (product.ProductColors.Count > 3)
+                                {
+                                    <span class="color-more">+@(product.ProductColors.Count - 3)</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <h3 class="product-name">@product.Name</h3>
+                    <span class="product-price">$ @product.Price.ToString("0")</span>
+                </div>
+            </a>
+        }
+    </div>
+</section>
+
+<!-- XIV Collections Section -->
+<section class="section-collections">
+    <div class="collection-header">
+        <h2 class="collection-title">
+            <span class="title-xiv">XIV</span>
+            <span class="title-coll">COLLECTIONS</span>
+            <span class="title-year">23-24</span>
+        </h2>
+    </div>
+    <div class="collection-filters">
+        <div class="filter-tabs">
+            <button class="tab active">(ALL)</button>
+            <button class="tab">Men</button>
+            <button class="tab">Women</button>
+            <button class="tab">KID</button>
+        </div>
+        <div class="filter-sort">
+            <span class="filter-label">Filters(+)</span>
+            <div class="sort-options">
+                <span class="sort-label">Sort(s)</span>
+                <span class="sort-option">Less to more</span>
+                <span class="sort-option">More to Less</span>
+            </div>
+        </div>
+    </div>
+    <div class="products-grid-3">
+        @foreach (var product in Model.CollectionProducts.Take(3))
+        {
+            <a href="@Url.Action("Details", "Products", new { id = product.Id })" class="product-card-large">
+                <div class="product-image">
+                    <img src="@product.ImageUrl" alt="@product.Name" />
+                </div>
+                <div class="product-info">
+                    <span class="product-type">@product.ProductType</span>
+                    <h3 class="product-name">@product.Name</h3>
+                    <span class="product-price">$ @product.Price.ToString("0")</span>
+                </div>
+            </a>
+        }
+    </div>
+    <div class="section-footer">
+        <a href="@Url.Action("Index", "Products")" class="btn-more">More</a>
+    </div>
+</section>
+
+<!-- Our Approach Section -->
+<section class="section-approach">
+    <h2 class="approach-title">OUR APPROACH TO FASHION DESIGN</h2>
+    <p class="approach-text">
+        at elegant vogue, we blend creativity with craftsmanship to create
+        fashion that transcends trends and stands the test of time each
+        design is meticulously crafted, ensuring the highest quality
+        exquisite finish
+    </p>
+    <div class="approach-images">
+        <div class="approach-img"><img src="/images/banners/approach-1.jpg" alt="Fashion" /></div>
+        <div class="approach-img"><img src="/images/banners/approach-2.jpg" alt="Fashion" /></div>
+        <div class="approach-img"><img src="/images/banners/approach-3.jpg" alt="Fashion" /></div>
+        <div class="approach-img"><img src="/images/banners/approach-4.jpg" alt="Fashion" /></div>
+    </div>
+</section>

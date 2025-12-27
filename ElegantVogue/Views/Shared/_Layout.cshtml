@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Elegant Vogue</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="menu-btn" id="menuBtn">
+                    <span></span>
+                    <span></span>
+                </button>
+                <nav class="nav">
+                    <a href="@Url.Action("Index", "Home")" class="nav-link">Home</a>
+                    <a href="@Url.Action("Index", "Products")" class="nav-link">Collections</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <a href="@Url.Action("Index", "Cart")" class="cart-btn">
+                    <span class="cart-text">Cart</span>
+                    <span class="cart-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        @if (ViewBag.CartCount != null && ViewBag.CartCount > 0)
+                        {
+                            <span class="cart-count">@ViewBag.CartCount</span>
+                        }
+                    </span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        @RenderBody()
+    </main>
+
+    <script src="~/js/site.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
