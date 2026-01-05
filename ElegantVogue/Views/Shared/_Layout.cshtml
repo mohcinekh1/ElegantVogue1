@@ -21,6 +21,24 @@
                 </nav>
             </div>
             <div class="header-right">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="@Url.Action("Index", "Admin")" class="nav-link admin-link">Admin</a>
+                    }
+                    <div class="user-menu">
+                        <span class="user-name">@User.Identity.Name</span>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn-logout">Logout</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account")" class="nav-link login-link">Login</a>
+                }
                 <a href="@Url.Action("Index", "Cart")" class="cart-btn">
                     <span class="cart-text">Cart</span>
                     <span class="cart-icon">
@@ -38,11 +56,9 @@
             </div>
         </div>
     </header>
-
     <main class="main-content">
         @RenderBody()
     </main>
-
     <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

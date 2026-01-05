@@ -3,24 +3,72 @@ using Microsoft.EntityFrameworkCore;
 using ElegantVogue.Data;
 using ElegantVogue.Models;
 using ElegantVogue.Models.ViewModels;
-using ElegantVogue.Services;
 
 namespace ElegantVogue.Controllers
 {
     public class CheckoutController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ICartService _cartService;
 
-        public CheckoutController(ApplicationDbContext context, ICartService cartService)
+        public CheckoutController(ApplicationDbContext context)
         {
             _context = context;
-            _cartService = cartService;
+        }
+
+        private string GetCartId()
+        {
+            var cartId = HttpContext.Session.GetString("CartId");
+            if (string.IsNullOrEmpty(cartId))
+            {
+                cartId = Guid.NewGuid().ToString();
+                HttpContext.Session.SetString("CartId", cartId);
+            }
+            return cartId;
+        }
+
+        private async Task<int> GetCartItemCountAsync()
+        {
+            var cartId = GetCartId();
+            return await _context.CartItems
+                .Where(ci => ci.CartId == cartId)
+                .SumAsync(ci => ci.Quantity);
+        }
+
+        private async Task<CartViewModel> GetCartInternalAsync()
+        {
+            var cartId = GetCartId();
+
+            var items = await _context.CartItems
+                .Include(ci => ci.Product)
+                .Include(ci => ci.Color)
+                .Include(ci => ci.Size)
+                .Where(ci => ci.CartId == cartId)
+                .ToListAsync();
+
+            var viewModel = new CartViewModel
+            {
+                Items = items.Select(ci => new CartItemViewModel
+                {
+                    CartItemId = ci.Id,
+                    ProductId = ci.ProductId,
+                    ProductName = ci.Product?.Name ?? "",
+                    ProductType = ci.Product?.ProductType ?? "",
+                    ImageUrl = ci.Product?.ImageUrl,
+                    Price = ci.Product?.Price ?? 0,
+                    Quantity = ci.Quantity,
+                    ColorName = ci.Color?.Name,
+                    ColorHex = ci.Color?.HexCode,
+                    SizeName = ci.Size?.Name
+                }).ToList()
+            };
+
+            viewModel.Subtotal = viewModel.Items.Sum(i => i.TotalPrice);
+            return viewModel;
         }
 
         public async Task<IActionResult> Index()
         {
-            var cart = await _cartService.GetCartAsync();
+            var cart = await GetCartInternalAsync();
 
             if (!cart.Items.Any())
             {
@@ -33,7 +81,7 @@ namespace ElegantVogue.Controllers
                 CurrentStep = "information"
             };
 
-            ViewBag.CartCount = await _cartService.GetCartItemCountAsync();
+            ViewBag.CartCount = await GetCartItemCountAsync();
             return View(viewModel);
         }
 
@@ -41,12 +89,12 @@ namespace ElegantVogue.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PlaceOrder(CheckoutViewModel model)
         {
-            var cart = await _cartService.GetCartAsync();
+            var cart = await GetCartInternalAsync();
             model.Cart = cart;
 
             if (!ModelState.IsValid)
             {
-                ViewBag.CartCount = await _cartService.GetCartItemCountAsync();
+                ViewBag.CartCount = await GetCartItemCountAsync();
                 return View("Index", model);
             }
 
@@ -87,7 +135,13 @@ namespace ElegantVogue.Controllers
             }
             await _context.SaveChangesAsync();
 
-            await _cartService.ClearCartAsync();
+            // Clear Cart
+            var cartId = GetCartId();
+            var cartItems = await _context.CartItems
+                .Where(ci => ci.CartId == cartId)
+                .ToListAsync();
+            _context.CartItems.RemoveRange(cartItems);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Confirmation", new { orderId = order.Id });
         }
@@ -104,6 +158,7 @@ namespace ElegantVogue.Controllers
                 return NotFound();
             }
 
+            ViewBag.CartCount = await GetCartItemCountAsync();
             return View(order);
         }
 

@@ -1,0 +1,57 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "Admin - Produits";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="admin-page">
+    <div class="admin-header">
+        <h1>Gestion des Produits</h1>
+        <a href="@Url.Action("Create")" class="btn-add">+ Ajouter un produit</a>
+    </div>
+
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Prix</th>
+                    <th>Catégorie</th>
+                    <th>Disponible</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@product.ImageUrl" alt="@product.Name" class="product-thumb" />
+                        </td>
+                        <td>@product.Name</td>
+                        <td>$@product.Price.ToString("0.00")</td>
+                        <td>@product.Category?.Name</td>
+                        <td>
+                            @if (product.IsAvailable)
+                            {
+                                <span class="badge badge-success">Oui</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger">Non</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = product.Id })" class="btn-edit">Modifier</a>
+                            <form asp-action="Delete" asp-route-id="@product.Id" method="post" class="delete-form">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

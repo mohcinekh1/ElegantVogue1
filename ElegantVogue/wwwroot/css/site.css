@@ -1820,3 +1820,569 @@ select.form-input {
         grid-template-columns: 1fr;
     }
 }
+/* ========================================
+   LOGIN & REGISTER PAGES
+======================================== */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
+}
+
+.auth-container {
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.auth-left {
+    flex: 1;
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ffffff;
+}
+
+    .auth-left .brand-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .auth-left h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+    }
+
+    .auth-left p {
+        font-size: 0.95rem;
+        opacity: 0.8;
+        line-height: 1.6;
+    }
+
+.benefits-list {
+    margin-top: 2rem;
+    list-style: none;
+    padding: 0;
+}
+
+    .benefits-list li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+        .benefits-list li::before {
+            content: '✓';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            font-size: 0.7rem;
+        }
+
+.auth-right {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-header {
+    margin-bottom: 2rem;
+}
+
+    .auth-header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #000000;
+        margin-bottom: 0.5rem;
+    }
+
+    .auth-header p {
+        font-size: 0.9rem;
+        color: #737373;
+    }
+
+.auth-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.auth-form .form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+    .auth-form .form-row .form-group {
+        flex: 1;
+    }
+
+.auth-form .form-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.auth-form .form-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e5e5e5;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    background: #fafafa;
+    box-sizing: border-box;
+}
+
+    .auth-form .form-input:focus {
+        outline: none;
+        border-color: #000000;
+        background: #ffffff;
+    }
+
+    .auth-form .form-input::placeholder {
+        color: #a3a3a3;
+    }
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+    .checkbox-wrapper input {
+        width: 18px;
+        height: 18px;
+        accent-color: #000000;
+        cursor: pointer;
+    }
+
+    .checkbox-wrapper span {
+        color: #525252;
+    }
+
+.forgot-link {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+    .forgot-link:hover {
+        text-decoration: underline;
+    }
+
+.btn-auth {
+    width: 100%;
+    padding: 1rem;
+    background: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+    .btn-auth:hover {
+        background: #333333;
+        transform: translateY(-1px);
+    }
+
+    .btn-auth:active {
+        transform: translateY(0);
+    }
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+    .auth-divider::before,
+    .auth-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #e5e5e5;
+    }
+
+    .auth-divider span {
+        padding: 0 1rem;
+        font-size: 0.8rem;
+        color: #a3a3a3;
+        text-transform: uppercase;
+    }
+
+.auth-footer-link {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #525252;
+}
+
+    .auth-footer-link a {
+        color: #000000;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .auth-footer-link a:hover {
+            text-decoration: underline;
+        }
+
+.auth-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 0.875rem;
+    margin-bottom: 1.25rem;
+    color: #dc2626;
+    font-size: 0.85rem;
+}
+
+.field-error {
+    color: #dc2626;
+    font-size: 0.75rem;
+    margin-top: 0.35rem;
+    display: block;
+}
+
+.back-link {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    color: #525252;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+    .back-link:hover {
+        color: #000000;
+    }
+
+/* Header Auth */
+.login-link {
+    margin-right: 1rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-right: 1rem;
+}
+
+.user-name {
+    font-size: 0.85rem;
+    color: #525252;
+}
+
+.logout-form {
+    display: inline;
+}
+
+.btn-logout {
+    background: none;
+    border: none;
+    color: #737373;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+}
+
+    .btn-logout:hover {
+        color: #000000;
+    }
+
+/* Responsive Auth */
+@media (max-width: 768px) {
+    .auth-container {
+        flex-direction: column;
+        max-width: 450px;
+    }
+
+    .auth-left {
+        padding: 2rem;
+    }
+
+    .auth-right {
+        padding: 2rem;
+    }
+
+    .auth-form .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+/* ========================================
+   ADMIN PAGES
+======================================== */
+.admin-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+    .admin-header h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+.btn-add {
+    padding: 0.75rem 1.5rem;
+    background: #000000;
+    color: #ffffff;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+    .btn-add:hover {
+        opacity: 0.85;
+    }
+
+.btn-back {
+    color: #525252;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+    .btn-back:hover {
+        color: #000000;
+    }
+
+.admin-table-container {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .admin-table th,
+    .admin-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .admin-table th {
+        background: #f5f5f5;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .admin-table td {
+        font-size: 0.9rem;
+    }
+
+.product-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge-danger {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.btn-edit {
+    padding: 0.4rem 0.75rem;
+    background: #e5e5e5;
+    color: #000000;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    margin-right: 0.5rem;
+}
+
+    .btn-edit:hover {
+        background: #d4d4d4;
+    }
+
+.delete-form {
+    display: inline;
+}
+
+.btn-delete {
+    padding: 0.4rem 0.75rem;
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+    .btn-delete:hover {
+        background: #fecaca;
+    }
+
+.admin-form-container {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 700px;
+}
+
+.admin-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.admin-form .form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.admin-form .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d4d4d4;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+    .admin-form .form-input:focus {
+        outline: none;
+        border-color: #000000;
+    }
+
+.admin-form .form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+    .admin-form .form-row .form-group {
+        flex: 1;
+    }
+
+.admin-form textarea.form-input {
+    resize: vertical;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+    .checkbox-item input {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid #d4d4d4;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 1rem;
+    background: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: opacity 0.2s;
+}
+
+    .btn-submit:hover {
+        opacity: 0.85;
+    }
+
+.admin-form .error {
+    color: #dc2626;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    display: block;
+}
