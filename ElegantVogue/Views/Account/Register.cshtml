@@ -1,0 +1,82 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="auth-page">
+    <a href="@Url.Action("Index", "Home")" class="back-link">← Back to Store</a>
+
+    <div class="auth-container">
+        <div class="auth-left">
+            <div class="brand-logo">ELEGANT VOGUE</div>
+            <h1>Join Our Community</h1>
+            <p>Create an account and enjoy exclusive benefits.</p>
+
+            <ul class="benefits-list">
+                <li>Exclusive member discounts</li>
+                <li>Early access to new collections</li>
+                <li>Track your orders easily</li>
+                <li>Save your favorite items</li>
+            </ul>
+        </div>
+
+        <div class="auth-right">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p>Fill in your details to get started</p>
+            </div>
+
+            <form asp-action="Register" method="post" class="auth-form">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="auth-error"></div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">First Name</label>
+                        <input asp-for="FirstName" class="form-input" placeholder="John" />
+                        <span asp-validation-for="FirstName" class="field-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last Name</label>
+                        <input asp-for="LastName" class="form-input" placeholder="Doe" />
+                        <span asp-validation-for="LastName" class="field-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input asp-for="Email" class="form-input" placeholder="your@email.com" autocomplete="email" />
+                    <span asp-validation-for="Email" class="field-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input asp-for="Password" class="form-input" placeholder="••••••••" autocomplete="new-password" />
+                    <span asp-validation-for="Password" class="field-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input asp-for="ConfirmPassword" class="form-input" placeholder="••••••••" autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword" class="field-error"></span>
+                </div>
+
+                <button type="submit" class="btn-auth">Create Account</button>
+            </form>
+
+            <div class="auth-divider">
+                <span>or</span>
+            </div>
+
+            <p class="auth-footer-link">
+                Already have an account? <a asp-action="Login">Sign In</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

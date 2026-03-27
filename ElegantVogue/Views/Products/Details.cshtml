@@ -1,0 +1,78 @@
+﻿@model ProductDetailViewModel
+@{
+    ViewData["Title"] = Model.Product.Name;
+}
+
+<div class="product-detail">
+    <div class="product-detail-container">
+        <!-- Image -->
+        <div class="product-detail-image">
+            <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" />
+        </div>
+
+        <!-- Info -->
+        <div class="product-detail-info">
+            <div class="info-card">
+                <button class="btn-wishlist">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </button>
+
+                <h1 class="detail-title">@Model.Product.Name.ToUpper()</h1>
+                <p class="detail-price">$@Model.Product.Price.ToString("0")</p>
+                <p class="detail-tax">MRP incl. of all taxes</p>
+
+                <p class="detail-description">@Model.Product.Description</p>
+
+                <form asp-controller="Cart" asp-action="Add" method="post">
+                    <input type="hidden" name="productId" value="@Model.Product.Id" />
+
+                    <!-- Colors -->
+                    @if (Model.AvailableColors.Any())
+                    {
+                        <div class="option-group">
+                            <label class="option-label">Color</label>
+                            <div class="color-options">
+                                @foreach (var color in Model.AvailableColors)
+                                {
+                                    <label class="color-option">
+                                        <input type="radio" name="colorId" value="@color.Id"
+                                               @(Model.AvailableColors.First().Id == color.Id ? "checked" : "") />
+                                        <span class="color-swatch-lg" style="background-color: @color.HexCode"></span>
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Sizes -->
+                    @if (Model.AvailableSizes.Any())
+                    {
+                        <div class="option-group">
+                            <label class="option-label">Size</label>
+                            <div class="size-options">
+                                @foreach (var size in Model.AvailableSizes)
+                                {
+                                    <label class="size-option">
+                                        <input type="radio" name="sizeId" value="@size.Id"
+                                               @(Model.AvailableSizes.First().Id == size.Id ? "checked" : "") />
+                                        <span class="size-text">@size.Name</span>
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <div class="size-guide">
+                        <a href="#">FIND YOUR SIZE</a>
+                        <span>|</span>
+                        <a href="#">MEASUREMENT GUIDE</a>
+                    </div>
+
+                    <button type="submit" class="btn-add-cart">ADD</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

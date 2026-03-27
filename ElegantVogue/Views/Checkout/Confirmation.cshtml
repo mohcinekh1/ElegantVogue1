@@ -1,0 +1,28 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<div class="confirmation-page">
+    <div class="confirmation-card">
+        <div class="confirmation-icon">✓</div>
+        <h1>Thank You!</h1>
+        <p>Your order has been placed successfully.</p>
+
+        <div class="order-info">
+            <p><strong>Order Number:</strong> @Model.OrderNumber</p>
+            <p><strong>Date:</strong> @Model.OrderDate.ToString("MMMM dd, yyyy")</p>
+            <p><strong>Total:</strong> $@Model.Total.ToString("0.00")</p>
+        </div>
+
+        <div class="shipping-info">
+            <h3>Shipping Address</h3>
+            <p>@Model.FirstName @Model.LastName</p>
+            <p>@Model.Address</p>
+            <p>@Model.City, @Model.StateRegion @Model.PostalCode</p>
+            <p>@Model.Country</p>
+        </div>
+
+        <a href="@Url.Action("Index", "Home")" class="btn-continue">Continue Shopping</a>
+    </div>
+</div>

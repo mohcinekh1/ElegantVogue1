@@ -1,0 +1,110 @@
+﻿@model CartViewModel
+@{
+    ViewData["Title"] = "Shopping Bag";
+}
+
+<div class="cart-page">
+    <h1 class="cart-title">SHOPPING BAG</h1>
+
+    @if (Model.Items.Any())
+    {
+        <div class="cart-container">
+            <!-- Items -->
+            <div class="cart-items">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="cart-item">
+                        <div class="item-image">
+                            <img src="@item.ImageUrl" alt="@item.ProductName" />
+                            <button class="item-wishlist">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="item-controls">
+                            <form asp-action="Remove" method="post" class="remove-form">
+                                <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                <button type="submit" class="btn-remove">×</button>
+                            </form>
+
+                            <span class="item-size">@item.SizeName</span>
+                            @if (!string.IsNullOrEmpty(item.ColorHex))
+                            {
+                                <span class="item-color" style="background-color: @item.ColorHex"></span>
+                            }
+
+                            <div class="quantity-control">
+                                <form asp-action="UpdateQuantity" method="post">
+                                    <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                    <button type="submit" name="quantity" value="@(item.Quantity + 1)" class="qty-btn">+</button>
+                                </form>
+                                <span class="qty-value">@item.Quantity</span>
+                                <form asp-action="UpdateQuantity" method="post">
+                                    <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                    <button type="submit" name="quantity" value="@(item.Quantity - 1)" class="qty-btn">−</button>
+                                </form>
+                            </div>
+
+                            <button class="btn-refresh">↻</button>
+                        </div>
+                        <div class="item-info">
+                            <span class="item-type">@item.ProductType</span>
+                            <h3 class="item-name">@item.ProductName</h3>
+                            <span class="item-price">$ @item.Price.ToString("0")</span>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Summary -->
+            <div class="cart-summary">
+                <div class="summary-card">
+                    <h2 class="summary-title">ORDER SUMMARY</h2>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>$@Model.Subtotal.ToString("0")</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>$@Model.Shipping.ToString("0")</span>
+                    </div>
+
+                    <div class="summary-total">
+                        <span>TOTAL <small>(TAX INCL.)</small></span>
+                        <span>$@Model.Total.ToString("0")</span>
+                    </div>
+
+                    <label class="terms-check">
+                        <input type="checkbox" id="termsCheck" />
+                        <span class="checkmark"></span>
+                        I agree to the Terms and Conditions
+                    </label>
+
+                    <a href="@Url.Action("Index", "Checkout")" class="btn-continue" id="btnContinue">CONTINUE</a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="cart-empty">
+            <p>Your shopping bag is empty.</p>
+            <a href="@Url.Action("Index", "Products")" class="btn-shop">Continue Shopping</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('termsCheck')?.addEventListener('change', function() {
+            var btn = document.getElementById('btnContinue');
+            if (this.checked) {
+                btn.classList.remove('disabled');
+            } else {
+                btn.classList.add('disabled');
+            }
+        });
+    </script>
+}
